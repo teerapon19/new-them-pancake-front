@@ -20,7 +20,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
   const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
 
   const liveOrFinishedSwitch = (
-    <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
+    <ButtonMenu  activeIndex={isExact ? 0 : 1} scale="sm" variant="primary">
       <ButtonMenuItem as={Link} to={`${url}`}>
         {t('Live')}
       </ButtonMenuItem>
@@ -35,7 +35,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
   const stakedOnlySwitch = (
     <Flex mt={['4px', null, 0, null]} ml={[0, null, '24px', null]} justifyContent="center" alignItems="center">
       <Toggle scale="sm" checked={stakedOnly} onChange={() => setStakedOnly((prev) => !prev)} />
-      <Text ml={['4px', '4px', '8px']}>{t('Staked only')}</Text>
+      <Text color="white" ml={['4px', '4px', '8px']}>{t('Staked only')}</Text>
     </Flex>
   )
 

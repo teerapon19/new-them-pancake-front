@@ -88,12 +88,12 @@ const Home: React.FC = () => {
   const { t } = useTranslation()
 
   return (
-    <Page>
+    <Page style={{ marginTop: '60px' }}>
       <Hero>
-        <Heading as="h1" scale="xl" mb="24px" color="secondary">
+        <Heading as="h1" scale="xl" mb="24px" color="white">
           {t('PancakeSwap')}
         </Heading>
-        <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+        <Text color="white">{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
       </Hero>
       <div>
         <Cards>
