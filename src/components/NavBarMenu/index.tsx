@@ -23,9 +23,12 @@ const NavBarMenu = (props) => {
   const [scrollPosition, setScrollPosition] = useState(0)
   const [isTop, setIsTop] = useState(true)
   const [hideOnScroll, setHideOnScroll] = useState(true)
+
+  const [showSlideBtn, setShowSlideBtn] = useState(false)
   
   const onCollapse = () => {
     setCollapsed(!collapsed)
+    setShowSlideBtn(true)
     onAnimationEnd()
   }
 
@@ -65,14 +68,21 @@ const NavBarMenu = (props) => {
     <Layout style={{ minHeight: '100vh' }}>
       <Layout>
         <Sider
-          // collapsible
+          onMouseOver={() => {
+            setShowSlideBtn(true)
+          }}
+          onMouseLeave={() => {
+            if (!collapsed) {
+              setShowSlideBtn(false)
+            }
+          }}
           width="240"
           style={{ 
             zIndex: 2000,  
             backgroundColor: 'rgb(16,38,72)',
             borderRight: '2px solid rgba(133, 133, 133, 0.1)'
         }} collapsed={collapsed} onCollapse={onCollapse}>
-          <button
+          { showSlideBtn && <button
             type="button"
             onClick={onCollapse}
             style={{
@@ -108,7 +118,7 @@ const NavBarMenu = (props) => {
                 color: 'white',
               }}
             />}
-          </button>
+          </button>}
           <div
             style={{
               width: '200px',
