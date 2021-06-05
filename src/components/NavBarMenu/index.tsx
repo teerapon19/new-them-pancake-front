@@ -2,15 +2,11 @@ import React, { useState } from 'react'
 import { useHistory } from "react-router-dom"
 import { Layout, Menu, Typography } from 'antd'
 import { HomeFilled, LeftOutlined, RightOutlined } from '@ant-design/icons'
-import { FaWallet, FaTractor, FaExchangeAlt, FaRocket } from 'react-icons/fa'
+import { FaTractor, FaExchangeAlt, FaRocket } from 'react-icons/fa'
 import { AiFillDollarCircle } from 'react-icons/ai'
 import { RiGroupFill } from 'react-icons/ri'
 import { MdMore } from 'react-icons/md'
-import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import { useWalletModal } from '@pancakeswap/uikit'
-import useAuth from 'hooks/useAuth'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
+import NavBar from './NavBar'
 
 const { Title } = Typography
 const { Content, Sider } = Layout
@@ -24,10 +20,10 @@ const NavBarMenu = (props) => {
   const [collapsed, setCollapsed] = useState(false)
   const [showText, setShowText] = useState(true)
 
-  const { account } = useWeb3React()
-  const { login, logout } = useAuth()
-  const wallet = useWalletModal(login, logout, account)
-
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [isTop, setIsTop] = useState(true)
+  const [hideOnScroll, setHideOnScroll] = useState(true)
+  
   const onCollapse = () => {
     setCollapsed(!collapsed)
     onAnimationEnd()
@@ -42,19 +38,6 @@ const NavBarMenu = (props) => {
       }, 300)
     }
   }
-
-  const ConnectWalletBtn = styled.button`
-    background-color: #1263f1;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #013ea7;
-    }
-  `
 
   const GetSelectPath = () => {
     const obj = []
@@ -71,14 +54,23 @@ const NavBarMenu = (props) => {
     return obj
   }
 
+  const scroll = (e: any) => {
+    const top = e.target.scrollTop
+    setHideOnScroll(scrollPosition > top)
+    setIsTop(top === 0)
+    setScrollPosition(top)
+  }
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Layout>
         <Sider
           // collapsible
-          width="240" style={{ 
-          backgroundColor: 'rgb(16,38,72)',
-          borderRight: '2px solid rgba(133, 133, 133, 0.1)'
+          width="240"
+          style={{ 
+            zIndex: 2000,  
+            backgroundColor: 'rgb(16,38,72)',
+            borderRight: '2px solid rgba(133, 133, 133, 0.1)'
         }} collapsed={collapsed} onCollapse={onCollapse}>
           <button
             type="button"
@@ -245,7 +237,7 @@ const NavBarMenu = (props) => {
                 key="l1"
                 onClick={
                   () => {
-                    window.open('https://github.com/pancakeswap', '_blank')
+                    window.open('https://github.com/pancakeswap', '_self')
                   }
                 }
               >
@@ -254,7 +246,7 @@ const NavBarMenu = (props) => {
               <Menu.Item
                 key="l2"
                 onClick={
-                  () => window.open('https://github.com/pancakeswap', '_blank')
+                  () => window.open('https://github.com/pancakeswap', '_self')
                 }
               >
                 Github
@@ -262,7 +254,7 @@ const NavBarMenu = (props) => {
               <Menu.Item
                 key="l3"
                 onClick={
-                  () => window.open('https://github.com/pancakeswap', '_blank')
+                  () => window.open('https://github.com/pancakeswap', '_self')
                 }
               >
                 Docs
@@ -271,35 +263,16 @@ const NavBarMenu = (props) => {
           </Menu>
         </Sider>
         <Layout style={{ height: '100vh' }}>
-          <Content style={{ position: 'relative', zIndex: 0, margin: '0', overflowY: 'scroll', backgroundColor: 'rgb(2 17 39)' }}>
-            <div
-              style={{
-                textAlign: 'right',
-                right: '0',
-                padding: '25px',
-                position: 'absolute'
-              }}
-            >
-              <ConnectWalletBtn
-                type='button'
-                onClick={() => {
-                  if (account && account !== '') {
-                    wallet.onPresentAccountModal()
-                  } else {
-                    wallet.onPresentConnectModal()
-                  }
-                }}
-              >
-                <FaWallet
-                  style={{
-                    position: 'relative',
-                    top: '2px',
-                    marginRight: '10px'
-                  }}
-                />
-                  { account && account !== '' ? truncateWalletAddress(account) : 'Connect wallet'}
-              </ConnectWalletBtn>
-            </div>
+          <Content
+            onScroll={scroll}
+            style={{
+              margin: '0',
+              backgroundColor: 'rgb(2 17 39)',
+              height: '100vh',
+              overflowY: 'scroll'
+            }}
+          >
+            <NavBar hideNav={hideOnScroll} isTop={isTop}/>
             { children }
           </Content>
         </Layout>

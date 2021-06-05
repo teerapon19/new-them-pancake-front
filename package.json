@@ -36,6 +36,7 @@
     "@ethersproject/abi": "^5.1.2",
     "@mdi/js": "^5.9.55",
     "@mdi/react": "^1.5.0",
+    "@n8tb1t/use-scroll-position": "^2.0.3",
     "@pancakeswap-libs/sdk": "^1.0.1",
     "@pancakeswap/uikit": "^0.33.1",
     "@reduxjs/toolkit": "^1.5.0",
